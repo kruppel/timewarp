@@ -4,6 +4,7 @@ var TIME_ZONE = (
 );
 
 var customLaunchers = [
+  37,
   38,
   39,
   40,
@@ -20,7 +21,7 @@ var customLaunchers = [
     browserName: 'chrome',
     platform: 'Windows 7',
     version: version + '',
-    timeZone: 'Tokyo'
+    timeZone: TIME_ZONE
   };
 
   return launchers;
