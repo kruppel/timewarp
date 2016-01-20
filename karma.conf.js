@@ -1,3 +1,8 @@
+var TIME_ZONE = (
+  process.env.SAUCE_TIMEZONE ||
+  (process.env.TZ || '').split('/')[1]
+);
+
 var customLaunchers = [
   38,
   39,
@@ -22,7 +27,7 @@ var customLaunchers = [
 }, {});
 
 module.exports = function(config) {
-  config.set({
+  const options = {
     frameworks: ['mocha'],
     files: [
       'node_modules/chai/chai.js',
@@ -32,7 +37,10 @@ module.exports = function(config) {
     preprocessors: {
       'test/**/*.js': ['babel']
     },
-    reporters: ['dots', 'saucelabs'],
+    client: {
+      args: [TIME_ZONE]
+    },
+    reporters: ['dots'],
     colors: true,
     autoWatch: true,
     singleRun: true,
@@ -42,11 +50,18 @@ module.exports = function(config) {
         presets: ['es2015']
       }
     },
-    sauceLabs: {
+    browsers: ['Chrome']
+  };
+
+  if (process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY) {
+    options.reporters.push('saucelabs');
+    options.customLaunchers = customLaunchers;
+    options.browsers = Object.keys(customLaunchers);
+    options.sauceLabs = {
       testName: 'Date tests',
       tunnelIdentifier: process.env.TRAVIS_JOB_NUMBER
-    },
-    customLaunchers: customLaunchers,
-    browsers: Object.keys(customLaunchers),
-  })
+    };
+  }
+
+  config.set(options);
 };
