@@ -8,15 +8,14 @@ var customLaunchers = [
   44,
   45,
   46,
-  47,
-  48
+  47
 ].reduce(function(launchers, version) {
   launchers['chrome_' + version] = {
     base: 'SauceLabs',
     browserName: 'chrome',
     platform: 'Windows 7',
     version: version + '',
-    timeZone: 'Asia/Tokyo'
+    timeZone: 'Tokyo'
   };
 
   return launchers;
